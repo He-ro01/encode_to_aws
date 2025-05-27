@@ -72,9 +72,9 @@ async function processEntry(entry, db) {
         // Step 3: Upload to S3
         const s3Prefix = ''; // root of the bucket
         log(`☁️ Uploading to S3 at ${s3Prefix}/`);
-        await uploadFolderToS3(videosDir, bucketName, ''); // No prefix
+        const key = await uploadFolderToS3(videosDir, bucketName, ''); // No prefix
         console.log("served at" + hlsUrl);
-        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${s3Prefix}.m3u8`;
+        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${key}.m3u8`;
 
         // Step 4: Save metadata
         const metadata = {

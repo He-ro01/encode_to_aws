@@ -13,14 +13,14 @@ const s3 = new S3Client({
     }
 });
 
-// Your S3 usage continues here...
-
-
+// Upload all files in a folder to S3
 async function uploadFolderToS3(localFolder, bucket, prefix) {
     const files = fs.readdirSync(localFolder);
+    const uploadedKeys = [];
 
     for (const file of files) {
         const filePath = path.join(localFolder, file);
+
         if (fs.statSync(filePath).isFile()) {
             const content = fs.readFileSync(filePath);
             const key = path.join(prefix, file).replace(/\\/g, '/');
@@ -34,8 +34,15 @@ async function uploadFolderToS3(localFolder, bucket, prefix) {
 
             await s3.send(command);
             console.log(`✅ Uploaded: ${key}`);
+
+            // Only add to uploadedKeys if it’s an m3u8 file
+            if (file.endsWith('.m3u8')) {
+                uploadedKeys.push(key);
+            }
         }
     }
+
+    return uploadedKeys;
 }
 
 function getMimeType(filename) {
