@@ -1,0 +1,69 @@
+[2025-05-27T11:40:14.947Z] 📂 Reading testurls.txt...
+[2025-05-27T11:40:14.952Z] 🚀 Starting: v_redd_it_01jh56fu683f1_DASH_720
+[2025-05-27T11:40:14.954Z] ⬇️ Downloading video: https://v.redd.it/01jh56fu683f1/DASH_720.mp4?source=fallback
+[2025-05-27T11:41:13.385Z] 🎞️ Converting with FFmpeg
+[2025-05-27T11:41:17.117Z] ☁️ Uploading to S3 at hls/v_redd_it_01jh56fu683f1_DASH_720/videos/
+[2025-05-27T11:41:32.774Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_01jh56fu683f1_DASH_720\videos\meta.json
+[2025-05-27T11:41:32.777Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_01jh56fu683f1_DASH_720\input.mp4
+[2025-05-27T11:41:32.778Z] ✅ Processing complete for: v_redd_it_01jh56fu683f1_DASH_720
+[2025-05-27T11:41:32.780Z] 🚀 Starting: v_redd_it_02iz0uhpz73f1_DASH_480
+[2025-05-27T11:41:32.781Z] ⬇️ Downloading video: https://v.redd.it/02iz0uhpz73f1/DASH_480.mp4?source=fallback
+[2025-05-27T11:41:36.156Z] 🎞️ Converting with FFmpeg
+[2025-05-27T11:41:36.341Z] ☁️ Uploading to S3 at hls/v_redd_it_02iz0uhpz73f1_DASH_480/videos/
+[2025-05-27T11:41:39.952Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_02iz0uhpz73f1_DASH_480\videos\meta.json
+[2025-05-27T11:41:39.954Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_02iz0uhpz73f1_DASH_480\input.mp4
+[2025-05-27T11:41:39.955Z] ✅ Processing complete for: v_redd_it_02iz0uhpz73f1_DASH_480
+[2025-05-27T11:41:39.956Z] 🚀 Starting: v_redd_it_c32igrq6193f1_DASH_1080
+[2025-05-27T11:41:39.957Z] ⬇️ Downloading video: https://v.redd.it/c32igrq6193f1/DASH_1080.mp4?source=fallback
+[2025-05-27T11:45:10.796Z] 📄 Reading URLs from C:\Users\Admin\zidithslencoder\testurls.txt
+[2025-05-27T11:45:10.801Z] 🚀 Starting: v_redd_it_01jh56fu683f1_DASH_720
+[2025-05-27T11:45:10.802Z] ⏭️ Already processed: v_redd_it_01jh56fu683f1_DASH_720
+[2025-05-27T11:45:10.804Z] 🚀 Starting: v_redd_it_02iz0uhpz73f1_DASH_480
+[2025-05-27T11:45:10.805Z] ⏭️ Already processed: v_redd_it_02iz0uhpz73f1_DASH_480
+[2025-05-27T11:45:10.808Z] 🚀 Starting: v_redd_it_c32igrq6193f1_DASH_1080
+[2025-05-27T11:45:10.810Z] ⬇️ Downloading video: https://v.redd.it/c32igrq6193f1/DASH_1080.mp4?source=fallback
+[2025-05-27T11:48:16.199Z] 🎞️ Converting with FFmpeg
+[2025-05-27T11:48:20.000Z] ☁️ Uploading to S3 at hls/v_redd_it_c32igrq6193f1_DASH_1080/videos/
+[2025-05-27T11:49:47.550Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_c32igrq6193f1_DASH_1080\videos\meta.json
+[2025-05-27T11:49:47.794Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_c32igrq6193f1_DASH_1080\input.mp4
+[2025-05-27T11:49:47.794Z] ✅ Successfully processed and saved to MongoDB: v_redd_it_c32igrq6193f1_DASH_1080
+[2025-05-27T11:49:47.795Z] 🚀 Starting: v_redd_it_un433t4uha3f1_DASH_360
+[2025-05-27T11:49:47.796Z] ⬇️ Downloading video: https://v.redd.it/un433t4uha3f1/DASH_360.mp4?source=fallback
+[2025-05-27T11:49:54.793Z] 🎞️ Converting with FFmpeg
+[2025-05-27T11:49:55.196Z] ☁️ Uploading to S3 at hls/v_redd_it_un433t4uha3f1_DASH_360/videos/
+[2025-05-27T11:50:27.885Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_un433t4uha3f1_DASH_360\videos\meta.json
+[2025-05-27T11:50:28.517Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_un433t4uha3f1_DASH_360\input.mp4
+[2025-05-27T11:50:28.518Z] ✅ Successfully processed and saved to MongoDB: v_redd_it_un433t4uha3f1_DASH_360
+[2025-05-27T11:50:28.519Z] 🚀 Starting: v_redd_it_1kqpm6aey93f1_DASH_720
+[2025-05-27T11:50:28.521Z] ⬇️ Downloading video: https://v.redd.it/1kqpm6aey93f1/DASH_720.mp4?source=fallback
+[2025-05-27T11:57:19.047Z] 🎞️ Converting with FFmpeg
+[2025-05-27T11:57:21.387Z] ☁️ Uploading to S3 at hls/v_redd_it_1kqpm6aey93f1_DASH_720/videos/
+[2025-05-27T11:57:53.497Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_1kqpm6aey93f1_DASH_720\videos\meta.json
+[2025-05-27T11:57:54.095Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_1kqpm6aey93f1_DASH_720\input.mp4
+[2025-05-27T11:57:54.097Z] ✅ Successfully processed and saved to MongoDB: v_redd_it_1kqpm6aey93f1_DASH_720
+[2025-05-27T11:57:54.098Z] 🚀 Starting: v_redd_it_gyp25neqm63f1_DASH_480
+[2025-05-27T11:57:54.138Z] ⬇️ Downloading video: https://v.redd.it/gyp25neqm63f1/DASH_480.mp4?source=fallback
+[2025-05-27T11:58:08.557Z] 🎞️ Converting with FFmpeg
+[2025-05-27T11:58:08.735Z] ☁️ Uploading to S3 at hls/v_redd_it_gyp25neqm63f1_DASH_480/videos/
+[2025-05-27T11:58:18.206Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_gyp25neqm63f1_DASH_480\videos\meta.json
+[2025-05-27T11:58:18.813Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_gyp25neqm63f1_DASH_480\input.mp4
+[2025-05-27T11:58:18.814Z] ✅ Successfully processed and saved to MongoDB: v_redd_it_gyp25neqm63f1_DASH_480
+[2025-05-27T11:58:18.814Z] 🚀 Starting: v_redd_it_bvqltoe2s43f1_DASH_480
+[2025-05-27T11:58:18.817Z] ⬇️ Downloading video: https://v.redd.it/bvqltoe2s43f1/DASH_480.mp4?source=fallback
+[2025-05-27T12:03:03.373Z] 🎞️ Converting with FFmpeg
+[2025-05-27T12:03:03.780Z] ☁️ Uploading to S3 at hls/v_redd_it_bvqltoe2s43f1_DASH_480/videos/
+[2025-05-27T12:03:34.868Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_bvqltoe2s43f1_DASH_480\videos\meta.json
+[2025-05-27T12:03:35.482Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_bvqltoe2s43f1_DASH_480\input.mp4
+[2025-05-27T12:03:35.484Z] ✅ Successfully processed and saved to MongoDB: v_redd_it_bvqltoe2s43f1_DASH_480
+[2025-05-27T12:03:35.486Z] 🚀 Starting: v_redd_it_dag7g35kj23f1_DASH_720
+[2025-05-27T12:03:35.490Z] ⬇️ Downloading video: https://v.redd.it/dag7g35kj23f1/DASH_720.mp4?source=fallback
+[2025-05-27T12:17:27.227Z] 🎞️ Converting with FFmpeg
+[2025-05-27T12:17:27.886Z] ☁️ Uploading to S3 at hls/v_redd_it_dag7g35kj23f1_DASH_720/videos/
+[2025-05-27T12:18:32.741Z] 📁 Saved metadata to C:\Users\Admin\zidithslencoder\videos\v_redd_it_dag7g35kj23f1_DASH_720\videos\meta.json
+[2025-05-27T12:18:33.400Z] 🗑️ Deleted original video: C:\Users\Admin\zidithslencoder\videos\v_redd_it_dag7g35kj23f1_DASH_720\input.mp4
+[2025-05-27T12:18:33.403Z] ✅ Successfully processed and saved to MongoDB: v_redd_it_dag7g35kj23f1_DASH_720
+[2025-05-27T12:18:33.407Z] 🚀 Starting: v_redd_it_d7hypdrqu53f1_DASH_360
+[2025-05-27T12:18:33.411Z] ⬇️ Downloading video: https://v.redd.it/d7hypdrqu53f1/DASH_360.mp4?source=fallback
+[2025-05-27T13:24:07.594Z] 📄 Reading URLs from C:\Users\Admin\zidithslencoder\testurls.txt
+[2025-05-27T13:24:07.609Z] 🚀 Starting: v_redd_it_01jh56fu683f1_DASH_720
+[2025-05-27T13:24:07.610Z] ⬇️ Downloading video: https://v.redd.it/01jh56fu683f1/DASH_720.mp4?source=fallback
