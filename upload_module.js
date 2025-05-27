@@ -1,54 +1,50 @@
-require('dotenv').config(); // Load env vars early
-
 const fs = require('fs');
 const path = require('path');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const AWS = require('aws-sdk');
+const mime = require('mime');
 
-// Create an S3 client using environment variables
-const s3 = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-    }
+AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
 });
 
-// Upload all files in a folder to S3
-async function uploadFolderToS3(localFolder, bucket, prefix) {
-    const files = fs.readdirSync(localFolder);
+const s3 = new AWS.S3();
+
+async function uploadFolderToS3(folderPath, bucketName, s3Prefix = '') {
     const uploadedKeys = [];
 
-    for (const file of files) {
-        const filePath = path.join(localFolder, file);
+    async function uploadFile(filePath) {
+        const fileStream = fs.createReadStream(filePath);
+        const key = path.join(s3Prefix, path.relative(folderPath, filePath)).replace(/\\/g, '/');
+        const contentType = mime.getType(filePath) || 'application/octet-stream';
 
-        if (fs.statSync(filePath).isFile()) {
-            const content = fs.readFileSync(filePath);
-            const key = path.join(prefix, file).replace(/\\/g, '/');
+        const params = {
+            Bucket: bucketName,
+            Key: key,
+            Body: fileStream,
+            ContentType: contentType,
+            ACL: 'public-read'
+        };
 
-            const command = new PutObjectCommand({
-                Bucket: bucket,
-                Key: key,
-                Body: content,
-                ContentType: getMimeType(file)
-            });
+        await s3.upload(params).promise();
+        uploadedKeys.push(key);
+    }
 
-            await s3.send(command);
-            console.log(`✅ Uploaded: ${key}`);
-
-            // Only add to uploadedKeys if it’s an m3u8 file
-            if (file.endsWith('.m3u8')) {
-                uploadedKeys.push(key);
+    async function walkAndUpload(dir) {
+        const entries = fs.readdirSync(dir, { withFileTypes: true });
+        for (const entry of entries) {
+            const fullPath = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                await walkAndUpload(fullPath);
+            } else {
+                await uploadFile(fullPath);
             }
         }
     }
 
+    await walkAndUpload(folderPath);
     return uploadedKeys;
-}
-
-function getMimeType(filename) {
-    if (filename.endsWith('.m3u8')) return 'application/vnd.apple.mpegurl';
-    if (filename.endsWith('.ts')) return 'video/MP2T';
-    return 'application/octet-stream';
 }
 
 module.exports = { uploadFolderToS3 };

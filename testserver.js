@@ -1,4 +1,3 @@
-//test server
 const fs = require('fs');
 require('dotenv').config();
 const path = require('path');
@@ -31,23 +30,18 @@ function sanitizeKey(url) {
 
 async function processUrl(videoUrl, db) {
     const uniqueId = `${sanitizeKey(videoUrl)}_${Date.now()}`;
-    const inputPath = path.join(outputRoot, `${uniqueId}_input.mp4`);
-    const outputPath = path.join(outputRoot, `${uniqueId}.m3u8`);
-    const metaPath = path.join(outputRoot, `${uniqueId}_meta.json`);
-    const keyName = videoUrl;
+    const videoDir = path.join(outputRoot, uniqueId);
+    const inputPath = path.join(videoDir, `input.mp4`);
+    const outputPath = path.join(videoDir, `${uniqueId}.m3u8`);
+    const metaPath = path.join(videoDir, 'meta.json');
 
-    console.log(`🚀 Starting: ${keyName}`);
+    if (!fs.existsSync(videoDir)) fs.mkdirSync(videoDir, { recursive: true });
 
-    if (fs.existsSync(outputPath)) {
-        log(`⏭️ Already processed: ${keyName}`);
-        return;
-    }
+    log(`🚀 Starting: ${videoUrl}`);
 
     try {
-        if (!fs.existsSync(outputRoot)) fs.mkdirSync(outputRoot, { recursive: true });
-
         // Step 1: Download video
-        log(`⬇️ Downloading video: ${videoUrl}`);
+        log(`⬇️ Downloading video...`);
         const writer = fs.createWriteStream(inputPath);
         const response = await axios.get(videoUrl, { responseType: 'stream' });
         response.data.pipe(writer);
@@ -56,8 +50,8 @@ async function processUrl(videoUrl, db) {
             writer.on('error', rej);
         });
 
-        // Step 2: FFmpeg HLS conversion
-        log(`🎞️ Converting with FFmpeg`);
+        // Step 2: Convert to HLS
+        log(`🎞️ Converting to HLS...`);
         const ffmpegCmd = `ffmpeg -i "${inputPath}" -codec copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls "${outputPath}"`;
         await new Promise((res, rej) => {
             exec(ffmpegCmd, (err, stdout, stderr) => {
@@ -69,20 +63,18 @@ async function processUrl(videoUrl, db) {
             });
         });
 
-        // Step 3: Upload to S3
-        const s3Prefix = ''; // root upload
-        log(`☁️ Uploading to S3 at ${s3Prefix}`);
-        const key = await uploadFolderToS3(outputRoot, bucketName, '');
+        // Step 3: Upload folder to S3
+        log(`☁️ Uploading to S3...`);
+        const uploadedKeys = await uploadFolderToS3(videoDir, bucketName, uniqueId);
+        const m3u8Key = uploadedKeys.find(k => k.endsWith('.m3u8'));
+        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${m3u8Key}`;
 
-        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${key}.m3u8`;
-        console.log("served at" + hlsUrl);
         // Step 4: Save metadata
         const metadata = {
             rawUrl: videoUrl,
-            hlsUrl: hlsUrl,
+            hlsUrl,
             processedAt: new Date().toISOString(),
         };
-
         fs.writeFileSync(metaPath, JSON.stringify(metadata, null, 2));
         log(`📁 Saved metadata to ${metaPath}`);
 
@@ -90,15 +82,16 @@ async function processUrl(videoUrl, db) {
         const collection = db.collection(collectionName);
         await collection.insertOne(metadata);
 
-        // Step 6: Delete original video
+        // Step 6: Clean up input
         if (fs.existsSync(inputPath)) {
             fs.unlinkSync(inputPath);
-            log(`🗑️ Deleted original video: ${inputPath}`);
+            log(`🗑️ Deleted input video: ${inputPath}`);
         }
 
-        log(`✅ Successfully processed and saved to MongoDB: ${keyName}`);
+        log(`✅ Successfully processed: ${videoUrl}`);
+        console.log(`📺 Served at: ${hlsUrl}`);
     } catch (err) {
-        log(`❌ Failed to process ${keyName}: ${err.message}`);
+        log(`❌ Failed to process ${videoUrl}: ${err.message}`);
     }
 }
 
@@ -108,7 +101,6 @@ async function main() {
         await client.connect();
         const db = client.db(dbName);
 
-        log(`📄 Reading URLs from ${inputFile}`);
         const urls = fs.readFileSync(inputFile, 'utf-8')
             .split('\n')
             .map(line => line.trim())
