@@ -1,50 +1,47 @@
+require('dotenv').config(); // Load env vars early
+
 const fs = require('fs');
 const path = require('path');
-const AWS = require('aws-sdk');
-const mime = require('mime');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 
-AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+// Create an S3 client using environment variables
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    }
 });
 
-const s3 = new AWS.S3();
+// Your S3 usage continues here...
 
-async function uploadFolderToS3(folderPath, bucketName, s3Prefix = '') {
-    const uploadedKeys = [];
 
-    async function uploadFile(filePath) {
-        const fileStream = fs.createReadStream(filePath);
-        const key = path.join(s3Prefix, path.relative(folderPath, filePath)).replace(/\\/g, '/');
-        const contentType = mime.getType(filePath) || 'application/octet-stream';
+async function uploadFolderToS3(localFolder, bucket, prefix) {
+    const files = fs.readdirSync(localFolder);
 
-        const params = {
-            Bucket: bucketName,
-            Key: key,
-            Body: fileStream,
-            ContentType: contentType,
-            ACL: 'public-read'
-        };
+    for (const file of files) {
+        const filePath = path.join(localFolder, file);
+        if (fs.statSync(filePath).isFile()) {
+            const content = fs.readFileSync(filePath);
+            const key = path.join(prefix, file).replace(/\\/g, '/');
 
-        await s3.upload(params).promise();
-        uploadedKeys.push(key);
-    }
+            const command = new PutObjectCommand({
+                Bucket: bucket,
+                Key: key,
+                Body: content,
+                ContentType: getMimeType(file)
+            });
 
-    async function walkAndUpload(dir) {
-        const entries = fs.readdirSync(dir, { withFileTypes: true });
-        for (const entry of entries) {
-            const fullPath = path.join(dir, entry.name);
-            if (entry.isDirectory()) {
-                await walkAndUpload(fullPath);
-            } else {
-                await uploadFile(fullPath);
-            }
+            await s3.send(command);
+            console.log(`✅ Uploaded: ${key}`);
         }
     }
+}
 
-    await walkAndUpload(folderPath);
-    return uploadedKeys;
+function getMimeType(filename) {
+    if (filename.endsWith('.m3u8')) return 'application/vnd.apple.mpegurl';
+    if (filename.endsWith('.ts')) return 'video/MP2T';
+    return 'application/octet-stream';
 }
 
 module.exports = { uploadFolderToS3 };
