@@ -74,7 +74,7 @@ async function processUrl(videoUrl, db) {
         log(`☁️ Uploading to S3 at ${s3Prefix}`);
         await uploadFolderToS3(outputRoot, bucketName, '');
 
-        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${uniqueId}.m3u8`;
+        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${s3Prefix}.m3u8`;
 
         // Step 4: Save metadata
         const metadata = {
