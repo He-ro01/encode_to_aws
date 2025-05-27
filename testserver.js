@@ -1,3 +1,4 @@
+//test server
 const fs = require('fs');
 require('dotenv').config();
 const path = require('path');
@@ -29,10 +30,10 @@ function sanitizeKey(url) {
 }
 
 async function processUrl(videoUrl, db) {
-    const keyName = sanitizeKey(videoUrl);
-    const inputPath = path.join(outputRoot, `${keyName}_input.mp4`);
-    const outputPath = path.join(outputRoot, `${keyName}_output.m3u8`);
-    const metaPath = path.join(outputRoot, `${keyName}_meta.json`);
+    const uniqueId = `${sanitizeKey(videoUrl)}_${Date.now()}`;
+    const inputPath = path.join(outputRoot, `${uniqueId}_input.mp4`);
+    const outputPath = path.join(outputRoot, `${uniqueId}.m3u8`);
+    const metaPath = path.join(outputRoot, `${uniqueId}_meta.json`);
 
     log(`🚀 Starting: ${keyName}`);
 
@@ -68,10 +69,11 @@ async function processUrl(videoUrl, db) {
         });
 
         // Step 3: Upload to S3
-        const s3Prefix = `hls/`;  // flat structure
+        const s3Prefix = ''; // root upload
         log(`☁️ Uploading to S3 at ${s3Prefix}`);
-        await uploadFolderToS3(outputRoot, bucketName, s3Prefix);
-        const hlsUrl = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Prefix}${keyName}_output.m3u8`;
+        await uploadFolderToS3(outputRoot, bucketName, '');
+
+        const hlsUrl = `${process.env.CLOUDFRONT_URL}/${uniqueId}.m3u8`;
 
         // Step 4: Save metadata
         const metadata = {
