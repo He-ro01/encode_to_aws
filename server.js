@@ -34,6 +34,7 @@ async function processEntry(entry, db) {
     const inputPath = path.join(videosDir, `input.mp4`);
     const outputPath = path.join(videosDir, `${uniqueId}.m3u8`);
     const metaPath = path.join(videosDir, 'meta.json');
+    const keyName = `${sanitizeKey(entry.videoUrl)}_${Date.now()}`; // or videoUrl in processUrl
 
     log(`🚀 Starting: ${keyName}`);
 

@@ -34,8 +34,9 @@ async function processUrl(videoUrl, db) {
     const inputPath = path.join(outputRoot, `${uniqueId}_input.mp4`);
     const outputPath = path.join(outputRoot, `${uniqueId}.m3u8`);
     const metaPath = path.join(outputRoot, `${uniqueId}_meta.json`);
+    const keyName = `${sanitizeKey(entry.videoUrl)}_${Date.now()}`; // or videoUrl in processUrl
 
-    log(`🚀 Starting: ${keyName}`);
+    console.log(`🚀 Starting: ${keyName}`);
 
     if (fs.existsSync(outputPath)) {
         log(`⏭️ Already processed: ${keyName}`);
